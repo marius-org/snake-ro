@@ -112,12 +112,47 @@ h1 {
 .no-effect { color:var(--text-muted); font-size:0.8rem; font-style:italic; }
 
 /* FOOD LEGEND */
-.food-item { display:flex; align-items:center; gap:0.6rem; padding:0.45rem 0.6rem; border-radius:var(--radius-sm); transition:background 0.2s; }
-.food-item:hover { background:rgba(255,255,255,0.06); }
-.food-emoji { font-size:1.3rem; width:28px; text-align:center; flex-shrink:0; }
-.food-name { font-size:0.78rem; font-weight:700; }
-.food-desc { font-size:0.65rem; color:var(--text-muted); }
-.food-pts { font-family:'Fredoka One',cursive; font-size:0.8rem; color:var(--yellow); margin-left:auto; flex-shrink:0; }
+.food-item { display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:0.7rem 0.8rem; border-radius:var(--radius-sm); transition:background 0.2s; flex-shrink:0; text-align:center; min-width:80px; }
+.food-item:hover { background:rgba(255,255,255,0.08); }
+.food-emoji { font-size:1.8rem; line-height:1; }
+.food-name { font-size:0.72rem; font-weight:800; color:var(--text); white-space:nowrap; }
+.food-desc { font-size:0.6rem; color:var(--text-muted); white-space:nowrap; }
+.food-pts { font-family:'Fredoka One',cursive; font-size:0.85rem; color:var(--yellow); }
+
+/* FOOD BAR */
+.food-bar {
+  position:relative; z-index:1;
+  background:rgba(255,255,255,0.04);
+  border-top:1px solid var(--card-border);
+  padding:0.8rem 1.5rem;
+  margin-top:0.5rem;
+}
+.food-bar-inner {
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+}
+.food-bar-label {
+  font-size:0.6rem;
+  font-weight:800;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  white-space:nowrap;
+  flex-shrink:0;
+  margin-right:0.5rem;
+}
+.food-bar-scroll {
+  display:flex;
+  gap:0.3rem;
+  overflow-x:auto;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  flex:1;
+}
+.food-bar-scroll::-webkit-scrollbar { display:none; }
 
 /* CANVAS */
 .canvas-container { display:flex; flex-direction:column; align-items:center; gap:1rem; }
@@ -290,10 +325,6 @@ input[type="text"]::placeholder { color:rgba(255,255,255,0.25); }
     <div class="card">
       <div class="card-title">Clasament</div>
       <div id="leaderboard"><div class="lb-empty">Se încarcă...</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Mâncare</div>
-      <div id="foodLegend"></div>
     </div>
   </div>
 
@@ -584,8 +615,9 @@ function renderFoodLegend(){
   document.getElementById('foodLegend').innerHTML=FOODS.map(f=>`
     <div class="food-item">
       <span class="food-emoji">${f.emoji}</span>
-      <div><div class="food-name">${f.name}</div><div class="food-desc">${f.desc}</div></div>
-      <span class="food-pts">+${f.points}</span>
+      <div class="food-pts">+${f.points}</div>
+      <div class="food-name">${f.name}</div>
+      <div class="food-desc">${f.desc}</div>
     </div>`).join('');
 }
 
@@ -636,10 +668,17 @@ document.getElementById('changeNameBtn').addEventListener('click',()=>{
 });
 
 // INIT
-renderFoodLegend();loadLeaderboard();
+loadLeaderboard();document.addEventListener('DOMContentLoaded',renderFoodLegend);
 setInterval(loadLeaderboard,30000);
 setInterval(()=>{if(state.effect&&state.effectEnd>0)updateEffectDisplay();},500);
 ctx.fillStyle='#0d0120';ctx.fillRect(0,0,canvas.width,canvas.height);
 </script>
+  <div class="food-bar">
+    <div class="food-bar-inner">
+      <div class="food-bar-label">🍽️ Mâncare</div>
+      <div class="food-bar-scroll" id="foodLegend"></div>
+    </div>
+  </div>
+
 </body>
 </html>
