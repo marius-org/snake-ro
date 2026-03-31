@@ -55,7 +55,8 @@ spec:
   ports:
     - port: 80
       targetPort: 8000
-  type: ClusterIP
+      nodePort: 32526
+  type: NodePort
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -66,7 +67,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: snake.local
+    - host: snake.slax.ro
       http:
         paths:
           - path: /
