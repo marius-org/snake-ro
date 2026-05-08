@@ -55,17 +55,15 @@ spec:
   ports:
     - port: 80
       targetPort: 8000
-      nodePort: 32526
-  type: NodePort
+  type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: snake-ro-ingress
   namespace: snake-ro
-  annotations:
-    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: nginx
   rules:
     - host: snake.slax.ro
       http:
