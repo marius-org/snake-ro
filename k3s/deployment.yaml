@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: snake-ro
-          image: mariuseu/snake-ro:latest
+          image: mariuseu/snake-ro:6
           ports:
             - containerPort: 8000
           env:
